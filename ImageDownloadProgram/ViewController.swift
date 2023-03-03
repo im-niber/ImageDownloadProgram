@@ -57,14 +57,15 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell else { return UICollectionViewCell()}
-
-        let url = URL(string: "https://source.unsplash.com/random")
+        cell.id = indexPath
+        let url = URL(string: "https://picsum.photos/200")
 
         let request = URLRequest(url: url!)
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else { return }
             let image = UIImage(data: data)
             self.imageRequestTask = Task {
+                guard cell.id == indexPath, cell.imageView.image == UIImage(systemName: "photo") else { return }
                 cell.imageView.image = image
             }
         }.resume()
@@ -84,15 +85,10 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 
 extension ViewController {
     @objc func reloadImages() {
-//        collectionView.visibleCells.forEach { cell in
-//            guard let cell = cell as? ImageCell else { return }
-//            cell.imageView.image = UIImage(systemName: "photo")
-//        }
-        
         collectionView.visibleCells.forEach { cell in
             guard let cell = cell as? ImageCell else { return }
             cell.imageView.image = UIImage(systemName: "photo")
-            let url = URL(string: "https://source.unsplash.com/random")
+            let url = URL(string: "https://picsum.photos/200")
 
             let request = URLRequest(url: url!)
             URLSession.shared.dataTask(with: request) { data, response, error in

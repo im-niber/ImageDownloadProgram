@@ -2,6 +2,7 @@ import UIKit
 
 final class ImageCell: UICollectionViewCell {
     static let identifier = "ImageCell"
+    var id: IndexPath?
     
     private var imageRequestTask: Task<Void, Never>?
     
@@ -72,7 +73,7 @@ final class ImageCell: UICollectionViewCell {
     
     @objc private func reloadImage() {
         imageView.image = UIImage(systemName: "photo")
-        let url = URL(string: "https://source.unsplash.com/random")
+        let url = URL(string: "https://picsum.photos/200")
         let request = URLRequest(url: url!)
         
         URLSession.shared.dataTask(with: request) { data, response, error in
